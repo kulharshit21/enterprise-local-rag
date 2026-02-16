@@ -15,6 +15,11 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
+# Install Python dependencies with GPU support (optional)
+# For GPU: build with --build-arg CMAKE_ARGS="-DLLAMA_CUBLAS=on"
+ARG CMAKE_ARGS
+ENV CMAKE_ARGS=${CMAKE_ARGS}
+
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -22,7 +27,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Create data directories
-RUN mkdir -p data/documents data/images data/chroma_db
+RUN mkdir -p data/documents data/images data/faiss_index models
 
 # Expose port
 EXPOSE 8000
