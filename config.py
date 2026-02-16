@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     )
 
     # ── LLM (Local LLaMA) ──
-    LLAMA_MODEL_PATH: str = "D:/RAG/Meta-Llama-3-8B-Instruct.Q4_K_M.gguf"
+    LLAMA_MODEL_PATH: str = "./models/Meta-Llama-3-8B-Instruct.Q4_K_M.gguf"
     LLM_CONTEXT_LENGTH: int = 4096
     LLM_MAX_TOKENS: int = 512
     LLM_TEMPERATURE: float = 0.1
