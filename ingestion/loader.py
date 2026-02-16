@@ -6,7 +6,7 @@ Supports PDF, Markdown, CSV, and HTML documents.
 import os
 import csv
 import uuid
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any
 from dataclasses import dataclass, field
 from datetime import datetime
 
@@ -25,7 +25,12 @@ class Document:
 class PDFLoader:
     """Load text and tables from PDF files using pdfplumber."""
 
-    def load(self, file_path: str, role_access: List[str] = None, sensitivity: str = "internal") -> Document:
+    def load(
+        self,
+        file_path: str,
+        role_access: List[str] = None,
+        sensitivity: str = "internal",
+    ) -> Document:
         import pdfplumber
 
         role_access = role_access or ["viewer"]
@@ -70,7 +75,12 @@ class PDFLoader:
 class MarkdownLoader:
     """Load content from Markdown files."""
 
-    def load(self, file_path: str, role_access: List[str] = None, sensitivity: str = "internal") -> Document:
+    def load(
+        self,
+        file_path: str,
+        role_access: List[str] = None,
+        sensitivity: str = "internal",
+    ) -> Document:
         role_access = role_access or ["viewer"]
 
         with open(file_path, "r", encoding="utf-8") as f:
@@ -92,7 +102,12 @@ class MarkdownLoader:
 class CSVLoader:
     """Load structured data from CSV files."""
 
-    def load(self, file_path: str, role_access: List[str] = None, sensitivity: str = "internal") -> Document:
+    def load(
+        self,
+        file_path: str,
+        role_access: List[str] = None,
+        sensitivity: str = "internal",
+    ) -> Document:
         role_access = role_access or ["viewer"]
         rows = []
 
@@ -123,7 +138,12 @@ class CSVLoader:
 class HTMLLoader:
     """Load content from HTML files by stripping tags."""
 
-    def load(self, file_path: str, role_access: List[str] = None, sensitivity: str = "internal") -> Document:
+    def load(
+        self,
+        file_path: str,
+        role_access: List[str] = None,
+        sensitivity: str = "internal",
+    ) -> Document:
         from bs4 import BeautifulSoup
 
         role_access = role_access or ["viewer"]

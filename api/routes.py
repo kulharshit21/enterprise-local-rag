@@ -2,30 +2,38 @@
 API route definitions for the RAG system.
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import HTMLResponse
 
 from api.schemas import (
-    RegisterRequest, LoginRequest, TokenResponse,
-    QueryRequest, QueryResponse,
-    IngestRequest, IngestResponse,
-    EvaluationResponse, HealthResponse,
+    RegisterRequest,
+    LoginRequest,
+    TokenResponse,
+    QueryRequest,
+    QueryResponse,
+    IngestRequest,
+    IngestResponse,
+    EvaluationResponse,
+    HealthResponse,
 )
 from api.dependencies import (
-    get_current_user, require_admin, check_rate_limit,
-    get_pipeline, get_users_db,
+    require_admin,
+    check_rate_limit,
+    get_pipeline,
+    get_users_db,
 )
 from security.auth import (
-    verify_password, create_access_token, TokenData,
+    verify_password,
+    create_access_token,
+    TokenData,
 )
 from security.users_db import UsersDB
 from pipeline import RAGPipeline
 from evaluation.runner import EvaluationRunner
 from observability.dashboard import generate_dashboard_html
 from observability import metrics as obs_metrics
-
 
 # ------------------------------------------------------------------ #
 #  AUTH ROUTES
@@ -54,9 +62,7 @@ async def register(
 
     obs_metrics.AUTH_COUNTER.labels(status="register_success").inc()
 
-    token = create_access_token(
-        data={"sub": user.username, "role": user.role}
-    )
+    token = create_access_token(data={"sub": user.username, "role": user.role})
 
     return TokenResponse(
         access_token=token,
@@ -88,9 +94,7 @@ async def login(
 
     obs_metrics.AUTH_COUNTER.labels(status="login_success").inc()
 
-    token = create_access_token(
-        data={"sub": user.username, "role": user.role}
-    )
+    token = create_access_token(data={"sub": user.username, "role": user.role})
 
     return TokenResponse(
         access_token=token,

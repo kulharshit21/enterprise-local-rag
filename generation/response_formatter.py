@@ -52,11 +52,13 @@ class ResponseFormatter:
         for citation in all_citations:
             marker_num = int(citation["marker"].strip("[]"))
             if marker_num in referenced_indices:
-                used.append({
-                    "doc_id": citation.get("doc_id", ""),
-                    "chunk_id": citation.get("chunk_id", ""),
-                    "source_file": citation.get("source_file", ""),
-                })
+                used.append(
+                    {
+                        "doc_id": citation.get("doc_id", ""),
+                        "chunk_id": citation.get("chunk_id", ""),
+                        "source_file": citation.get("source_file", ""),
+                    }
+                )
 
         # If no markers found, include all citations (LLM didn't use markers)
         if not used and all_citations:

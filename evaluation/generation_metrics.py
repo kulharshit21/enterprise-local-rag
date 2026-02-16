@@ -3,7 +3,7 @@ Generation quality metrics: Exact Match, F1, Faithfulness, Context Utilization.
 """
 
 import re
-from typing import List, Dict, Any, Set
+from typing import List
 from collections import Counter
 
 
@@ -49,9 +49,7 @@ def f1_score(prediction: str, reference: str) -> float:
     return 2 * (precision * recall) / (precision + recall)
 
 
-def context_utilization(
-    answer: str, context_chunks: List[str]
-) -> float:
+def context_utilization(answer: str, context_chunks: List[str]) -> float:
     """
     Measure how much of the retrieved context was utilized in the answer.
 

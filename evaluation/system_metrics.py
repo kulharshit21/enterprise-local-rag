@@ -4,13 +4,13 @@ System-level performance metrics: latency, token usage, cost estimation.
 
 import time
 from typing import Dict, Any, List
-from dataclasses import dataclass, field
-from collections import defaultdict
+from dataclasses import dataclass
 
 
 @dataclass
 class QueryMetrics:
     """Metrics for a single query."""
+
     query_id: str = ""
     total_latency_ms: float = 0
     retrieval_latency_ms: float = 0
@@ -30,7 +30,7 @@ class SystemMetricsTracker:
     """
 
     # Cost per 1M tokens (approximate for gpt-4o-mini)
-    INPUT_COST_PER_1M = 0.15   # $0.15 per 1M input tokens
+    INPUT_COST_PER_1M = 0.15  # $0.15 per 1M input tokens
     OUTPUT_COST_PER_1M = 0.60  # $0.60 per 1M output tokens
 
     def __init__(self):
@@ -40,9 +40,10 @@ class SystemMetricsTracker:
         """Record metrics for a completed query."""
         # Estimate cost
         metrics.estimated_cost_usd = (
-            (metrics.prompt_tokens / 1_000_000) * self.INPUT_COST_PER_1M
-            + (metrics.completion_tokens / 1_000_000) * self.OUTPUT_COST_PER_1M
-        )
+            metrics.prompt_tokens / 1_000_000
+        ) * self.INPUT_COST_PER_1M + (
+            metrics.completion_tokens / 1_000_000
+        ) * self.OUTPUT_COST_PER_1M
         self.queries.append(metrics)
 
     def get_summary(self) -> Dict[str, Any]:
@@ -62,7 +63,12 @@ class SystemMetricsTracker:
                 "max_ms": round(max(latencies), 2),
                 "p50_ms": round(sorted(latencies)[len(latencies) // 2], 2),
                 "p95_ms": round(
-                    sorted(latencies)[int(len(latencies) * 0.95)] if len(latencies) > 1 else latencies[0], 2
+                    (
+                        sorted(latencies)[int(len(latencies) * 0.95)]
+                        if len(latencies) > 1
+                        else latencies[0]
+                    ),
+                    2,
                 ),
             },
             "tokens": {

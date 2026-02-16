@@ -4,7 +4,6 @@ Evaluates faithfulness of generated answers against retrieved context.
 """
 
 import re
-import numpy as np
 from typing import List, Dict, Any
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -93,12 +92,14 @@ class HallucinationDetector:
             if is_supported:
                 supported_count += 1
 
-            claim_results.append({
-                "claim": claim,
-                "best_similarity": round(best_score, 4),
-                "is_supported": is_supported,
-                "evidence_preview": best_chunk[:100] if best_chunk else "",
-            })
+            claim_results.append(
+                {
+                    "claim": claim,
+                    "best_similarity": round(best_score, 4),
+                    "is_supported": is_supported,
+                    "evidence_preview": best_chunk[:100] if best_chunk else "",
+                }
+            )
 
         # Step 4: Aggregate
         claim_score = supported_count / len(claims) if claims else 0
@@ -125,7 +126,7 @@ class HallucinationDetector:
 
     def _extract_claims(self, text: str) -> List[str]:
         """Extract individual claims (sentences) from generated text."""
-        sentences = re.split(r'(?<=[.!?])\s+', text.strip())
+        sentences = re.split(r"(?<=[.!?])\s+", text.strip())
         claims = []
         for s in sentences:
             s = s.strip()

@@ -2,7 +2,7 @@
 Multimodal image embeddings using CLIP.
 """
 
-from typing import List, Optional
+from typing import List
 import numpy as np
 
 

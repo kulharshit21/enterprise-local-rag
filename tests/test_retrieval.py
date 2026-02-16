@@ -2,7 +2,6 @@
 Unit tests for retrieval module — RRF merging and role filtering.
 """
 
-import pytest
 from retrieval.hybrid import HybridRetriever
 from security.rbac import RBACFilter
 

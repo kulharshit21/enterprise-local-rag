@@ -2,9 +2,18 @@
 Unit tests for evaluation metrics.
 """
 
-import pytest
-from evaluation.retrieval_metrics import precision_at_k, recall_at_k, mean_reciprocal_rank, ndcg_at_k
-from evaluation.generation_metrics import exact_match, f1_score, context_utilization, normalize_text
+from evaluation.retrieval_metrics import (
+    precision_at_k,
+    recall_at_k,
+    mean_reciprocal_rank,
+    ndcg_at_k,
+)
+from evaluation.generation_metrics import (
+    exact_match,
+    f1_score,
+    context_utilization,
+    normalize_text,
+)
 
 
 class TestRetrievalMetrics:

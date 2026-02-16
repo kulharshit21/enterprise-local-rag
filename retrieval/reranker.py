@@ -3,7 +3,7 @@ Cross-encoder reranker using BGE-reranker-large.
 Reranks top-K candidates from hybrid retrieval for precision improvement.
 """
 
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any
 from config import settings
 
 
@@ -68,6 +68,8 @@ class CrossEncoderReranker:
         for candidate, score in zip(candidates, scores):
             candidate["rerank_score"] = float(score)
 
-        reranked = sorted(candidates, key=lambda x: x.get("rerank_score", 0), reverse=True)
+        reranked = sorted(
+            candidates, key=lambda x: x.get("rerank_score", 0), reverse=True
+        )
 
         return reranked[:top_k]

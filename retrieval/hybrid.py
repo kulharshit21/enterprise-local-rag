@@ -93,7 +93,9 @@ class HybridRetriever:
                 chunk_map[chunk_id] = result
 
         # Sort by RRF score
-        sorted_ids = sorted(rrf_scores.keys(), key=lambda x: rrf_scores[x], reverse=True)
+        sorted_ids = sorted(
+            rrf_scores.keys(), key=lambda x: rrf_scores[x], reverse=True
+        )
 
         # Build final results
         fused_results = []

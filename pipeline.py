@@ -5,7 +5,6 @@ Fully local inference — no paid APIs.
 """
 
 import time
-import asyncio
 from typing import Dict, Any, Optional, List
 
 from config import settings, ensure_directories
@@ -53,7 +52,9 @@ class RAGPipeline:
         # Retrieval
         self.dense_retriever = DenseRetriever(self.embedder, self.vector_store)
         self.sparse_retriever = SparseRetriever(self.sparse_indexer)
-        self.hybrid_retriever = HybridRetriever(self.dense_retriever, self.sparse_retriever)
+        self.hybrid_retriever = HybridRetriever(
+            self.dense_retriever, self.sparse_retriever
+        )
 
         # Optional reranker
         self.use_reranker = use_reranker
@@ -105,7 +106,9 @@ class RAGPipeline:
 
         # Load documents
         if directory:
-            documents = self.doc_loader.load_directory(directory, role_access, sensitivity)
+            documents = self.doc_loader.load_directory(
+                directory, role_access, sensitivity
+            )
         elif file_path:
             documents = [self.doc_loader.load(file_path, role_access, sensitivity)]
         else:
@@ -214,7 +217,9 @@ class RAGPipeline:
                 results = results[:top_k]
 
             retrieval_ids = [r.get("chunk_id", "") for r in results]
-            self.query_logger.log_retrieval(query_id, retrieval_ids, retrieval_timer.elapsed_ms)
+            self.query_logger.log_retrieval(
+                query_id, retrieval_ids, retrieval_timer.elapsed_ms
+            )
 
             # Step 5: Build prompt
             prompt_data = self.prompt_builder.build_prompt(question, results)
@@ -246,7 +251,9 @@ class RAGPipeline:
             query_metrics.hallucination_check_ms = hal_timer.elapsed_ms
 
             self.query_logger.log_hallucination_check(
-                query_id, faithfulness["faithfulness_score"], faithfulness["is_faithful"]
+                query_id,
+                faithfulness["faithfulness_score"],
+                faithfulness["is_faithful"],
             )
 
             # Step 8: Determine final answer
@@ -285,7 +292,9 @@ class RAGPipeline:
                 completion_tokens=query_metrics.completion_tokens,
             )
 
-            self.query_logger.log_query_complete(query_id, total_latency_ms, len(final_answer))
+            self.query_logger.log_query_complete(
+                query_id, total_latency_ms, len(final_answer)
+            )
             obs_metrics.ACTIVE_QUERIES.dec()
 
             return response

@@ -2,7 +2,6 @@
 Unit tests for the ingestion chunker module.
 """
 
-import pytest
 from ingestion.chunker import SemanticChunker, Chunk
 
 

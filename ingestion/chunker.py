@@ -33,7 +33,9 @@ class SemanticChunker:
     3. Add overlap for context continuity
     """
 
-    def __init__(self, chunk_size: int = 512, chunk_overlap: int = 50, model: str = "cl100k_base"):
+    def __init__(
+        self, chunk_size: int = 512, chunk_overlap: int = 50, model: str = "cl100k_base"
+    ):
         self.chunk_size = chunk_size
         self.chunk_overlap = chunk_overlap
         self.encoding = tiktoken.get_encoding(model)
@@ -42,7 +44,9 @@ class SemanticChunker:
         """Count tokens in text using tiktoken."""
         return len(self.encoding.encode(text))
 
-    def chunk_document(self, content: str, doc_id: str, metadata: Dict[str, Any] = None) -> List[Chunk]:
+    def chunk_document(
+        self, content: str, doc_id: str, metadata: Dict[str, Any] = None
+    ) -> List[Chunk]:
         """
         Split document content into chunks.
 
@@ -90,7 +94,10 @@ class SemanticChunker:
             if not part.strip():
                 continue
             # Check if this is a boundary marker
-            if re.match(r"^#{1,6}\s", part.strip()) or part.strip() in ("[TABLE]", "[/TABLE]"):
+            if re.match(r"^#{1,6}\s", part.strip()) or part.strip() in (
+                "[TABLE]",
+                "[/TABLE]",
+            ):
                 if current.strip():
                     segments.append(current.strip())
                 current = part
@@ -180,7 +187,7 @@ class SemanticChunker:
         tokens = self.encoding.encode(text)
         chunks = []
         for i in range(0, len(tokens), self.chunk_size):
-            chunk_tokens = tokens[i:i + self.chunk_size]
+            chunk_tokens = tokens[i : i + self.chunk_size]
             chunk_text = self.encoding.decode(chunk_tokens)
             if chunk_text.strip():
                 chunks.append(chunk_text.strip())

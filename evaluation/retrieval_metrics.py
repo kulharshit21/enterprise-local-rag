@@ -5,7 +5,9 @@ Retrieval quality metrics: Precision@K, Recall@K, MRR.
 from typing import List, Set
 
 
-def precision_at_k(retrieved_ids: List[str], relevant_ids: Set[str], k: int = 5) -> float:
+def precision_at_k(
+    retrieved_ids: List[str], relevant_ids: Set[str], k: int = 5
+) -> float:
     """
     Precision@K: fraction of retrieved documents in top-K that are relevant.
 

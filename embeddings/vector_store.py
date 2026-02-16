@@ -8,7 +8,7 @@ import os
 import json
 import numpy as np
 import faiss
-from typing import List, Dict, Any, Optional, Tuple
+from typing import List, Dict, Any, Optional
 from config import settings
 
 
@@ -76,11 +76,15 @@ class VectorStore:
             faiss.write_index(index_to_save, index_file)
 
         with open(meta_file, "w") as f:
-            json.dump({
-                "metadata": {str(k): v for k, v in self._metadata.items()},
-                "doc_map": self._doc_map,
-                "next_id": self._next_id,
-            }, f, indent=2)
+            json.dump(
+                {
+                    "metadata": {str(k): v for k, v in self._metadata.items()},
+                    "doc_map": self._doc_map,
+                    "next_id": self._next_id,
+                },
+                f,
+                indent=2,
+            )
 
     def _move_to_gpu(self):
         """Move FAISS index to GPU."""
@@ -109,9 +113,7 @@ class VectorStore:
         else:
             # Compressed — ~95% recall, 4x memory savings
             quantizer = faiss.IndexFlatIP(self.dimension)
-            index = faiss.IndexIVFPQ(
-                quantizer, self.dimension, 4096, 64, 8
-            )
+            index = faiss.IndexIVFPQ(quantizer, self.dimension, 4096, 64, 8)
             index.nprobe = 128
 
         return index
@@ -145,7 +147,7 @@ class VectorStore:
             self._index = self._create_index(len(chunk_ids))
 
         # Train IVF index if needed and not yet trained
-        if hasattr(self._index, 'is_trained') and not self._index.is_trained:
+        if hasattr(self._index, "is_trained") and not self._index.is_trained:
             if len(embeddings) >= 256:  # Minimum for IVF training
                 # For GPU index, need CPU copy for training
                 cpu_index = self._index
@@ -232,12 +234,14 @@ class VectorStore:
                 if not any(r in role_filter for r in doc_roles):
                     continue
 
-            results.append({
-                "chunk_id": meta.get("chunk_id", ""),
-                "content": meta.get("content", ""),
-                "metadata": meta,
-                "score": float(score),
-            })
+            results.append(
+                {
+                    "chunk_id": meta.get("chunk_id", ""),
+                    "content": meta.get("content", ""),
+                    "metadata": meta,
+                    "score": float(score),
+                }
+            )
 
             if len(results) >= top_k:
                 break

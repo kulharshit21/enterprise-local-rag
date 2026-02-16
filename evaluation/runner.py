@@ -4,13 +4,16 @@ Evaluation runner: loads QA dataset, executes queries, computes all metrics.
 
 import json
 import os
-import uuid
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List
 from datetime import datetime
 
-from evaluation.retrieval_metrics import precision_at_k, recall_at_k, mean_reciprocal_rank, ndcg_at_k
+from evaluation.retrieval_metrics import (
+    precision_at_k,
+    recall_at_k,
+    mean_reciprocal_rank,
+)
 from evaluation.generation_metrics import exact_match, f1_score, context_utilization
-from evaluation.system_metrics import SystemMetricsTracker, QueryMetrics
+from evaluation.system_metrics import SystemMetricsTracker
 
 
 class EvaluationRunner:
@@ -61,7 +64,9 @@ class EvaluationRunner:
 
                 answer = response.get("answer", "")
                 citations = response.get("citations", [])
-                retrieved_ids = [c.get("chunk_id", c.get("doc_id", "")) for c in citations]
+                retrieved_ids = [
+                    c.get("chunk_id", c.get("doc_id", "")) for c in citations
+                ]
                 context_texts = response.get("_context_texts", [])
 
                 # Compute metrics
@@ -71,29 +76,51 @@ class EvaluationRunner:
                     "predicted_answer": answer[:200],
                     "expected_answer": expected_answer[:200],
                     "metrics": {
-                        "exact_match": exact_match(answer, expected_answer) if expected_answer else None,
-                        "f1_score": f1_score(answer, expected_answer) if expected_answer else None,
-                        "context_utilization": context_utilization(answer, context_texts) if context_texts else None,
+                        "exact_match": (
+                            exact_match(answer, expected_answer)
+                            if expected_answer
+                            else None
+                        ),
+                        "f1_score": (
+                            f1_score(answer, expected_answer)
+                            if expected_answer
+                            else None
+                        ),
+                        "context_utilization": (
+                            context_utilization(answer, context_texts)
+                            if context_texts
+                            else None
+                        ),
                         "confidence_score": response.get("confidence_score", 0),
                     },
                 }
 
                 # Retrieval metrics (if we have ground truth)
                 if relevant_doc_ids:
-                    eval_result["metrics"].update({
-                        "precision_at_5": precision_at_k(retrieved_ids, relevant_doc_ids, k=5),
-                        "recall_at_5": recall_at_k(retrieved_ids, relevant_doc_ids, k=5),
-                        "mrr": mean_reciprocal_rank(retrieved_ids, relevant_doc_ids),
-                    })
+                    eval_result["metrics"].update(
+                        {
+                            "precision_at_5": precision_at_k(
+                                retrieved_ids, relevant_doc_ids, k=5
+                            ),
+                            "recall_at_5": recall_at_k(
+                                retrieved_ids, relevant_doc_ids, k=5
+                            ),
+                            "mrr": mean_reciprocal_rank(
+                                retrieved_ids, relevant_doc_ids
+                            ),
+                        }
+                    )
 
                 results.append(eval_result)
 
             except Exception as e:
-                results.append({
-                    "question": query,
-                    "type": test_type,
-                    "error": str(e),
-                })
+                results.append(
+                    {
+                        "question": query,
+                        "type": test_type,
+                        "error": str(e),
+                    }
+                )
 
         # Aggregate
         report = self._aggregate_results(results)
@@ -105,8 +132,15 @@ class EvaluationRunner:
 
     def _aggregate_results(self, results: List[Dict]) -> Dict[str, Any]:
         """Compute aggregate metrics across all test cases."""
-        metrics_keys = ["exact_match", "f1_score", "context_utilization",
-                        "confidence_score", "precision_at_5", "recall_at_5", "mrr"]
+        metrics_keys = [
+            "exact_match",
+            "f1_score",
+            "context_utilization",
+            "confidence_score",
+            "precision_at_5",
+            "recall_at_5",
+            "mrr",
+        ]
 
         aggregated = {}
         for key in metrics_keys:

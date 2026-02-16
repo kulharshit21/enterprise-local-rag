@@ -5,9 +5,8 @@ All local — no paid API keys required.
 """
 
 import os
-from pathlib import Path
 from pydantic_settings import BaseSettings
-from pydantic import Field, ConfigDict
+from pydantic import ConfigDict
 
 
 class Settings(BaseSettings):

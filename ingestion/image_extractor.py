@@ -41,8 +41,6 @@ class ImageExtractor:
         Returns list of ExtractedImage objects with saved file paths.
         """
         import pdfplumber
-        from PIL import Image
-        import io
 
         role_access = role_access or ["viewer"]
         extracted = []
@@ -85,7 +83,9 @@ class ImageExtractor:
                             extracted.append(extracted_img)
 
                         except Exception as e:
-                            print(f"Warning: Failed to extract image {img_idx} from page {page_num}: {e}")
+                            print(
+                                f"Warning: Failed to extract image {img_idx} from page {page_num}: {e}"
+                            )
                             continue
 
         except Exception as e:

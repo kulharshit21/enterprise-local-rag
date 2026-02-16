@@ -62,12 +62,14 @@ def create_app() -> FastAPI:
         ensure_directories()
 
         # Set system info metric
-        obs_metrics.SYSTEM_INFO.info({
-            "llm_model": settings.LLAMA_MODEL_PATH,
-            "embedding_model": settings.EMBEDDING_MODEL,
-            "chunk_size": str(settings.CHUNK_SIZE),
-            "top_k": str(settings.TOP_K),
-        })
+        obs_metrics.SYSTEM_INFO.info(
+            {
+                "llm_model": settings.LLAMA_MODEL_PATH,
+                "embedding_model": settings.EMBEDDING_MODEL,
+                "chunk_size": str(settings.CHUNK_SIZE),
+                "top_k": str(settings.TOP_K),
+            }
+        )
 
     # --- Root redirect ---
     @app.get("/", include_in_schema=False)

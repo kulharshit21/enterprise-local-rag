@@ -6,8 +6,6 @@ from typing import List, Dict, Any
 
 import tiktoken
 
-from config import settings
-
 
 class PromptBuilder:
     """
@@ -63,12 +61,14 @@ class PromptBuilder:
                 break
 
             context_parts.append(entry)
-            citations.append({
-                "marker": marker,
-                "doc_id": str(doc_id),
-                "chunk_id": chunk.get("chunk_id", ""),
-                "source_file": str(source),
-            })
+            citations.append(
+                {
+                    "marker": marker,
+                    "doc_id": str(doc_id),
+                    "chunk_id": chunk.get("chunk_id", ""),
+                    "source_file": str(source),
+                }
+            )
             total_tokens += entry_tokens
 
         # Build context block

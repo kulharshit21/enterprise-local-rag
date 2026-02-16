@@ -2,7 +2,7 @@
 Role-Based Access Control (RBAC) for document retrieval filtering.
 """
 
-from typing import List, Optional, Dict, Any
+from typing import List, Dict, Any
 
 
 class RBACFilter:
@@ -33,9 +33,7 @@ class RBACFilter:
         """
         user_level = cls.ROLE_HIERARCHY.get(user_role, 0)
         accessible = [
-            role
-            for role, level in cls.ROLE_HIERARCHY.items()
-            if level <= user_level
+            role for role, level in cls.ROLE_HIERARCHY.items() if level <= user_level
         ]
         return accessible
 

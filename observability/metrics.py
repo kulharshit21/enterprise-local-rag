@@ -4,7 +4,6 @@ Prometheus metrics for production monitoring.
 
 from prometheus_client import Counter, Histogram, Gauge, Info
 
-
 # --- Counters ---
 QUERY_COUNTER = Counter(
     "rag_queries_total",

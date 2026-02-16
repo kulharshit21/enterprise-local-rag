@@ -4,12 +4,11 @@ Pydantic schemas for API request/response validation.
 
 from pydantic import BaseModel, Field
 from typing import List, Dict, Any, Optional
-from datetime import datetime
-
 
 # ------------------------------------------------------------------ #
 #  AUTH
 # ------------------------------------------------------------------ #
+
 
 class RegisterRequest(BaseModel):
     username: str = Field(..., min_length=3, max_length=50)
@@ -34,6 +33,7 @@ class TokenResponse(BaseModel):
 #  QUERY
 # ------------------------------------------------------------------ #
 
+
 class QueryRequest(BaseModel):
     question: str = Field(..., min_length=3, max_length=2000)
     top_k: Optional[int] = Field(default=None, ge=1, le=20)
@@ -56,11 +56,14 @@ class QueryResponse(BaseModel):
 #  INGESTION
 # ------------------------------------------------------------------ #
 
+
 class IngestRequest(BaseModel):
     directory: Optional[str] = None
     file_path: Optional[str] = None
     role_access: List[str] = Field(default=["viewer"])
-    sensitivity: str = Field(default="internal", pattern="^(public|internal|confidential|restricted)$")
+    sensitivity: str = Field(
+        default="internal", pattern="^(public|internal|confidential|restricted)$"
+    )
 
 
 class IngestResponse(BaseModel):
@@ -74,6 +77,7 @@ class IngestResponse(BaseModel):
 #  EVALUATION
 # ------------------------------------------------------------------ #
 
+
 class EvaluationResponse(BaseModel):
     aggregate_metrics: Dict[str, Any]
     dataset_size: int
@@ -84,6 +88,7 @@ class EvaluationResponse(BaseModel):
 # ------------------------------------------------------------------ #
 #  HEALTH
 # ------------------------------------------------------------------ #
+
 
 class HealthResponse(BaseModel):
     status: str = "healthy"

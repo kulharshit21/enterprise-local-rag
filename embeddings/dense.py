@@ -4,7 +4,7 @@ GPU-accelerated, float16, with BGE query-prefix protocol.
 """
 
 import numpy as np
-from typing import List, Optional
+from typing import List
 from config import settings
 
 

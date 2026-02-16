@@ -41,10 +41,30 @@ class UsersDB:
     def _seed_defaults(self):
         """Create default demo users with different roles."""
         defaults = [
-            {"username": "admin", "password": "admin123", "role": "admin", "email": "admin@rag.com"},
-            {"username": "researcher", "password": "research123", "role": "researcher", "email": "researcher@rag.com"},
-            {"username": "analyst", "password": "analyst123", "role": "analyst", "email": "analyst@rag.com"},
-            {"username": "viewer", "password": "viewer123", "role": "viewer", "email": "viewer@rag.com"},
+            {
+                "username": "admin",
+                "password": "admin123",
+                "role": "admin",
+                "email": "admin@rag.com",
+            },
+            {
+                "username": "researcher",
+                "password": "research123",
+                "role": "researcher",
+                "email": "researcher@rag.com",
+            },
+            {
+                "username": "analyst",
+                "password": "analyst123",
+                "role": "analyst",
+                "email": "analyst@rag.com",
+            },
+            {
+                "username": "viewer",
+                "password": "viewer123",
+                "role": "viewer",
+                "email": "viewer@rag.com",
+            },
         ]
 
         for user in defaults:

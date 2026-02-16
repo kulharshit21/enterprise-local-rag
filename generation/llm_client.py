@@ -6,7 +6,7 @@ No paid APIs — fully local inference.
 
 import time
 import os
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 from config import settings
 
 
@@ -67,7 +67,9 @@ class LLMClient:
             Dict with 'content', 'usage', 'latency_ms'
         """
         max_tokens = max_tokens or settings.LLM_MAX_TOKENS
-        temperature = temperature if temperature is not None else settings.LLM_TEMPERATURE
+        temperature = (
+            temperature if temperature is not None else settings.LLM_TEMPERATURE
+        )
 
         start = time.time()
 
@@ -97,7 +99,8 @@ class LLMClient:
             "usage": {
                 "prompt_tokens": usage.get("prompt_tokens", 0),
                 "completion_tokens": usage.get("completion_tokens", 0),
-                "total_tokens": usage.get("prompt_tokens", 0) + usage.get("completion_tokens", 0),
+                "total_tokens": usage.get("prompt_tokens", 0)
+                + usage.get("completion_tokens", 0),
             },
             "latency_ms": elapsed_ms,
             "model": os.path.basename(self.model_path),

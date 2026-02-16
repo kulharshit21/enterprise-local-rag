@@ -14,6 +14,7 @@ from config import settings
 
 class UserModel(BaseModel):
     """User data model."""
+
     username: str
     hashed_password: str
     role: str = "viewer"
@@ -23,6 +24,7 @@ class UserModel(BaseModel):
 
 class TokenData(BaseModel):
     """JWT token payload."""
+
     username: str
     role: str
     exp: Optional[datetime] = None

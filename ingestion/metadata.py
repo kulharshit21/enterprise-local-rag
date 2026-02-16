@@ -2,8 +2,7 @@
 Metadata extraction and tagging for document chunks.
 """
 
-import uuid
-from typing import List, Dict, Any, Optional
+from typing import List, Optional
 from datetime import datetime
 
 from ingestion.loader import Document
@@ -53,14 +52,16 @@ class MetadataExtractor:
 
         # Enrich metadata on each chunk
         for chunk in chunks:
-            chunk.metadata.update({
-                "doc_id": document.doc_id,
-                "source_file": document.source_file,
-                "doc_type": document.doc_type,
-                "role_access": document.metadata.get("role_access", ["viewer"]),
-                "sensitivity": document.metadata.get("sensitivity", "internal"),
-                "ingested_at": datetime.utcnow().isoformat(),
-            })
+            chunk.metadata.update(
+                {
+                    "doc_id": document.doc_id,
+                    "source_file": document.source_file,
+                    "doc_type": document.doc_type,
+                    "role_access": document.metadata.get("role_access", ["viewer"]),
+                    "sensitivity": document.metadata.get("sensitivity", "internal"),
+                    "ingested_at": datetime.utcnow().isoformat(),
+                }
+            )
 
         return chunks
 

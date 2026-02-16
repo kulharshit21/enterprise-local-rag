@@ -36,11 +36,13 @@ class SparseRetriever:
         # Normalize to same format as dense retriever
         formatted = []
         for chunk_dict, score in results:
-            formatted.append({
-                "chunk_id": chunk_dict.get("chunk_id", ""),
-                "content": chunk_dict.get("content", ""),
-                "metadata": chunk_dict.get("metadata", {}),
-                "score": score,
-            })
+            formatted.append(
+                {
+                    "chunk_id": chunk_dict.get("chunk_id", ""),
+                    "content": chunk_dict.get("content", ""),
+                    "metadata": chunk_dict.get("metadata", {}),
+                    "score": score,
+                }
+            )
 
         return formatted
