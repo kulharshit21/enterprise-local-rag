@@ -34,30 +34,30 @@ This project implements a production-grade RAG pipeline that runs **100% locally
 
 ```mermaid
 graph TD
-    User[User / Client] -->|Query| API[FastAPI Gateway]
-    API -->|Auth Check| Auth[JWT Authentication]
-    API -->|REST| Pipeline[RAG Pipeline]
+    User["User / Client"] -->|Query| API["FastAPI Gateway"]
+    API -->|Auth Check| Auth["JWT Authentication"]
+    API -->|REST| Pipeline["RAG Pipeline"]
     
     subgraph "Ingestion Flow"
-        Doc[Document] -->|Parses| Chunker[Semantic Chunker]
-        Chunker -->|Embeds| Embedder[BGE Embedder]
-        Embedder -->|Indexes| VectorStore[FAISS Vector DB]
-        Chunker -->|Keywords| Sparse[BM25 Index]
+        Doc[Document] -->|Parses| Chunker["Semantic Chunker"]
+        Chunker -->|Embeds| Embedder["BGE Embedder"]
+        Embedder -->|Indexes| VectorStore["FAISS Vector DB"]
+        Chunker -->|Keywords| Sparse["BM25 Index"]
     end
     
     subgraph "Retrieval Flow"
         Pipeline -->|Query| Embedder
         Embedder -->|Dense Search| VectorStore
         Pipeline -->|Keywords| Sparse
-        VectorStore & Sparse -->|Merge| RRF[Reciprocal Rank Fusion]
-        RRF -->|Candidates| Reranker[BGE Cross-Encoder]
-        Reranker -->|Top-K| Context[Context Window]
+        VectorStore & Sparse -->|Merge| RRF["Reciprocal Rank Fusion"]
+        RRF -->|Candidates| Reranker["BGE Cross-Encoder"]
+        Reranker -->|Top-K| Context["Context Window"]
     end
     
     subgraph "Generation Flow"
-        Context -->|Prompt| LLM[LLaMA 3 8B (Local)]
+        Context -->|Prompt| LLM["LLaMA 3 8B (Local)"]
         LLM -->|Stream| API
-        LLM -->|Verify| Hallucination[Faithfulness Check]
+        LLM -->|Verify| Hallucination["Faithfulness Check"]
     end
 ```
 
@@ -77,8 +77,8 @@ graph TD
 
 ### 1. Clone the Repository
 ```bash
-git clone <your-repo-url>
-cd RAG
+git clone https://github.com/kulharshit21/enterprise-local-rag.git
+cd enterprise-local-rag
 ```
 
 ### 2. Create a Virtual Environment
